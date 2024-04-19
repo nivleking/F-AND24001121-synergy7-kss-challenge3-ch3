@@ -1,18 +1,16 @@
 package com.binar.challenge3.Adapters
 
-import android.content.Intent
-import android.util.Log
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.binar.challenge3.Models.Model
 import com.binar.challenge3.R
-import com.binar.challenge3.UserActivities.WordsActivity
 
 class Adapter(
-    private var usedList: List<Model>
+    private var usedList: List<String>,
 ) : RecyclerView.Adapter<Adapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val alphabetTV: TextView = itemView.findViewById(R.id.hurufTV)
@@ -28,15 +26,53 @@ class Adapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.alphabetTV.text = usedList[position].id.toString()
+        val listOfWords = mapOf(
+            "A" to listOf("Apple", "Ant", "Ape"),
+            "B" to listOf("Banana", "Bat", "Bee"),
+            "C" to listOf("Cat", "Car", "Cow"),
+            "D" to listOf("Dog", "Duck", "Deer"),
+            "E" to listOf("Elephant", "Eagle", "Eel"),
+            "F" to listOf("Fox", "Fish", "Frog"),
+            "G" to listOf("Goat", "Giraffe", "Gorilla"),
+            "H" to listOf("Horse", "Hippo", "Hedgehog"),
+            "I" to listOf("Iguana", "Impala", "Insect"),
+            "J" to listOf("Jaguar", "Jellyfish", "Jackal"),
+            "K" to listOf("Kangaroo", "Koala", "Kookaburra"),
+            "L" to listOf("Lion", "Lemur", "Llama"),
+            "M" to listOf("Monkey", "Moose", "Mole"),
+            "N" to listOf("Narwhal", "Newt", "Nightingale"),
+            "O" to listOf("Owl", "Otter", "Ox"),
+            "P" to listOf("Penguin", "Panda", "Parrot"),
+            "Q" to listOf("Quail", "Quokka", "Quetzal"),
+            "R" to listOf("Rabbit", "Raccoon", "Reindeer"),
+            "S" to listOf("Squirrel", "Seal", "Shark"),
+            "T" to listOf("Tiger", "Turtle", "Toucan"),
+            "U" to listOf("Uakari", "Umbrellabird", "Urial"),
+            "V" to listOf("Vulture", "Viper", "Vole"),
+            "W" to listOf("Wolf", "Whale", "Wombat"),
+            "X" to listOf("Xerus", "X-ray Tetra", "Xenops"),
+            "Y" to listOf("Yak", "Yellowjacket", "Yabby"),
+            "Z" to listOf("Zebra", "Zebu", "Zonkey")
+        )
 
+        holder.alphabetTV.text = usedList[position]
+
+        //homepage
         holder.itemView.setOnClickListener {
-            val intent = Intent(holder.itemView.context, WordsActivity::class.java)
-            intent.putStringArrayListExtra(
+            val bundle = Bundle()
+            bundle.putStringArrayList(
                 "word",
-                ArrayList(usedList[position].listOfWords)
+                ArrayList(listOfWords[usedList[position]] ?: listOf())
             )
-            holder.itemView.context.startActivity(intent)
+
+            it.findNavController().navigate(R.id.action_homePage_to_wordPage, bundle)
+
+//            holder.itemView.setOnClickListener {
+//                val action = HomePageDirections.actionHomePageToWordPage(
+//                    ArrayList(listOfWords[usedList[position]] ?: listOf())
+//                )
+//                it.findNavController().navigate(action)
+//            }
         }
     }
 }
